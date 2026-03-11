@@ -1,11 +1,71 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
+
 <body>
-    <script src="/script.js"></script>
+    <script>
+        const validateAge = age => (age !== +age) ? !(Number.isNaN(+age)) : true;
+
+        const validateName = function (name) {
+            return (typeof name === 'string')
+                ? name.length > 0
+                : String(name).length > 0
+        }
+
+        function validateSubscription(subsStatus) {
+            const subscriptionStatuses = ['free', 'basic', 'premium'];
+            return subscriptionStatuses.includes(subsStatus);
+        }
+
+        // ----------------------------------------------------------------------
+        const userAlex = {
+            name: "Alex",
+            age: 14,
+            subscription: "basic",
+            lastLogin: 17,
+        }
+
+        let name = validateName(userAlex.name) ? userAlex.name : null;
+        let age = validateAge(userAlex.age) ? +userAlex.age : null;
+        let subscription = validateSubscription(userAlex.subscription) ? userAlex.subscription : null;
+        let lastLogin = userAlex.lastLogin;
+
+        displayUserInfo(name, age, subscription, lastLogin);
+
+        let bonus = age % 10;
+        bonus += 5;
+        // ----------------------------------------------------------------------
+
+        function getTimeOfDay(hour) {
+            if (Number.isNaN(+hour)) return null
+            const validHour = +hour;
+            if ((validHour < 0) || (validHour > 23)) return null
+            if ((validHour >= 5) && (validHour <= 11)) return "утро"
+            if ((validHour >= 12) && (validHour <= 17)) return "день"
+            return ((validHour >= 18) && (validHour <= 21)) ? "вечер" : "ночь"
+        }
+
+        function getAccessLevel(subsStatus) {
+            subsStatus ??= 'free';
+            if (subsStatus === 'premium') return "Полный доступ"
+            if (subsStatus === 'basic') return "Ограниченный доступ"
+            return "Доступ только к бесплатному контенту"
+        }
+
+        function displayUserInfo(name, age, subscription, lastLogin) {
+            let timeOfDay = getTimeOfDay(lastLogin);
+            let accessLevel = getAccessLevel(subscription);
+            let message = `Привет, ${name}! Вам ${age} лет. Сейчас ${timeOfDay}. Уровень доступа: ${accessLevel}.`;
+            if (age < 18) message += "\n\nВы несовершеннолетний пользователь."
+            if (timeOfDay !== "ночь") message += "\n\nПозднее время для входа."
+            console.log(message);
+        }
+    </script>
 </body>
+
 </html>
